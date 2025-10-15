@@ -19,17 +19,9 @@ class FlutterNativeTimezonePlugin : FlutterPlugin, MethodCallHandler {
     // backward compatibility with flutter api v1
     companion object {
         @JvmStatic
-        @Suppress("DEPRECATION", "UNCHECKED_CAST")
-        fun registerWith(registrar: Any) {
-            try {
-                val plugin = FlutterNativeTimezonePlugin()
-                // Use reflection to access messenger() method for backward compatibility
-                val messenger = registrar.javaClass.getMethod("messenger").invoke(registrar) as BinaryMessenger
-                plugin.setupMethodChannel(messenger)
-            } catch (e: Exception) {
-                // Fallback for newer Flutter versions where Registrar might not be available
-                // This ensures the plugin doesn't crash on newer Flutter versions
-            }
+        fun registerWith(registrar: FlutterPlugin.FlutterPluginBinding) {
+            val plugin = FlutterNativeTimezonePlugin()
+            plugin.setupMethodChannel(registrar.binaryMessenger)
         }
     }
 
